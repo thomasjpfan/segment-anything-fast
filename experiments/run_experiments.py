@@ -145,7 +145,8 @@ def run(batch_size,
         num_workers=32,
         print_header=True,
         capture_output=True,
-        local_fork_only=False):
+        local_fork_only=False,
+        limit=None):
 
     assert model == "vit_b" or model == "vit_h"
 
@@ -155,7 +156,8 @@ def run(batch_size,
                              model,
                              batch_size=batch_size,
                              num_workers=num_workers,
-                             capture_output=capture_output)
+                             capture_output=capture_output,
+                             limit=limit)
 
     print_header = True
     if run_traces:
