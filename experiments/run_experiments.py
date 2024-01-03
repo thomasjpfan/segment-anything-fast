@@ -202,5 +202,38 @@ def run(batch_size,
         rexp("sparse",       "local-fork",   use_half="bfloat16",  use_compile="max-autotune", use_nested_tensor=(batch_size > 1), compress="sparse")
 
 
+def run_experiment_cli(
+        config,
+        batch_size,
+        model,
+        sam_path,
+        experiments_data,
+        num_workers=32,
+        capture_output=True,
+        limit=None):
+    assert model == "vit_b" or model == "vit_h"
+    assert batch_size >= 2
+
+    configurations = {
+        "fp32": dict(sam_commit_name="default"),
+        "bf16": dict(sam_commit_name= "codesign", use_half="bfloat16"),
+        "compile": dict(sam_commit_name="codesign", use_half="bfloat16", use_compile="max-autotune"),
+        "SDPA": dict(sam_commit_name="sdpa-decoder", use_half="bfloat16", use_compile="max-autotune"),
+        "Triton": dict(sam_commit_name="local-fork", use_half="bfloat16", use_compile="max-autotune"),
+        "NT": dict(change_sam_commit="local-fork", use_half="bfloat16",  use_compile="max-autotune", use_nested_tensor=True),
+    }
+
+    run_experiment(experiments_data,
+                   sam_path,
+                   model,
+                   config,
+                   **configurations[config],
+                   batch_size=batch_size,
+                   num_workers=num_workers,
+                   capture_output=capture_output,
+                   limit=limit,
+                   print_header=True)
+
+
 if __name__ == '__main__':
-    fire.Fire(run)
+    fire.Fire(run_experiment_cli)
