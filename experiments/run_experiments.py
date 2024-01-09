@@ -98,6 +98,8 @@ def run_experiment(experiments_data,
     prefix = ",".join(
         map(str, [idx, (t1 - t0)/60.0, sam_commit_name, pytorch_version]))
     if result.returncode != 0:
+        print(result.stdout) 
+        print(result.stderr) 
         print(prefix + ",ERROR")
         return
     if print_header:
