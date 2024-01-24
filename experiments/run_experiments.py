@@ -220,7 +220,9 @@ def run_experiment_cli(
         "compile": dict(sam_commit_name="codesign", use_half="bfloat16", use_compile="max-autotune"),
         "SDPA": dict(sam_commit_name="sdpa-decoder", use_half="bfloat16", use_compile="max-autotune"),
         "Triton": dict(sam_commit_name="local-fork", use_half="bfloat16", use_compile="max-autotune"),
-        "NT": dict(change_sam_commit="local-fork", use_half="bfloat16",  use_compile="max-autotune", use_nested_tensor=True),
+        "NT": dict(sam_commit_name="local-fork", use_half="bfloat16",  use_compile="max-autotune", use_nested_tensor=True),
+        "int8": dict(sam_commit_name="local-fork", use_half="bfloat16",  use_compile="max-autotune", use_nested_tensor=True, compress="dynamic_quant"),
+        "sparse": dict(sam_commit_name="local-fork", use_half="bfloat16",  use_compile="max-autotune", use_nested_tensor=True, compress="sparse"),
     }
 
     run_experiment(experiments_data,
